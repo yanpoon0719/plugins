@@ -17,6 +17,7 @@ static GMSCameraUpdate* ToCameraUpdate(NSArray* data);
 static NSDictionary* GMSCoordinateBoundsToJson(GMSCoordinateBounds* bounds);
 static void InterpretMapOptions(NSDictionary* data, id<FLTGoogleMapOptionsSink> sink);
 static double ToDouble(NSNumber* data) { return [FLTGoogleMapJsonConversions toDouble:data]; }
+static GMSMapView *sharedMapView = nil;
 
 @implementation FLTGoogleMapFactory {
   NSObject<FlutterPluginRegistrar>* _registrar;
@@ -69,7 +70,17 @@ static double ToDouble(NSNumber* data) { return [FLTGoogleMapJsonConversions toD
     _viewId = viewId;
 
     GMSCameraPosition* camera = ToOptionalCameraPosition(args[@"initialCameraPosition"]);
-    _mapView = [GMSMapView mapWithFrame:frame camera:camera];
+    // _mapView = [GMSMapView mapWithFrame:frame camera:camera];
+
+    if (!sharedMapView) {
+      sharedMapView = [GMSMapView mapWithFrame:frame camera:camera];
+    } else {
+      [sharedMapView clear];
+      [sharedMapView setFrame:frame];
+      [sharedMapView setCamera:camera];
+    }
+    _mapView = sharedMapView;
+
     _mapView.accessibilityElementsHidden = NO;
     _trackCameraPosition = NO;
     InterpretMapOptions(args[@"options"], self);
