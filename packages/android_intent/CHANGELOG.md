@@ -1,3 +1,42 @@
+## 0.3.5+1
+
+* Make the pedantic dev_dependency explicit.
+
+## 0.3.5
+
+* Add support for [setType](https://developer.android.com/reference/android/content/Intent.html#setType(java.lang.String)) and [setDataAndType](https://developer.android.com/reference/android/content/Intent.html#setDataAndType(android.net.Uri,%20java.lang.String)) parameters. 
+
+##  0.3.4+8
+
+* Remove the deprecated `author:` field from pubspec.yaml
+* Migrate the plugin to the pubspec platforms manifest.
+* Require Flutter SDK 1.10.0 or greater.
+
+##  0.3.4+7
+
+* Fix pedantic linter errors.
+
+##  0.3.4+6
+
+* Add missing DartDocs for public members.
+
+##  0.3.4+5
+
+* Remove AndroidX warning.
+
+## 0.3.4+4
+
+* Include lifecycle dependency as a compileOnly one on Android to resolve
+  potential version conflicts with other transitive libraries.
+
+## 0.3.4+3
+
+* Android: Use android.arch.lifecycle instead of androidx.lifecycle:lifecycle in `build.gradle` to support apps that has not been migrated to AndroidX.
+
+## 0.3.4+2
+
+* Fix resolveActivity not respecting the provided componentName.
+
 ## 0.3.4+1
 
 * Fix minor lints in the Java platform code.

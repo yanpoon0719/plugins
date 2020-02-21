@@ -13,6 +13,7 @@ import static org.mockito.Mockito.verify;
 import static org.robolectric.Shadows.shadowOf;
 
 import android.app.Application;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -27,6 +28,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.shadows.ShadowPackageManager;
 
 @RunWith(RobolectricTestRunner.class)
 public class MethodCallHandlerImplTest {
@@ -193,5 +195,66 @@ public class MethodCallHandlerImplTest {
     Intent intent = shadowOf((Application) context).getNextStartedActivity();
     assertNotNull(intent);
     assertNull(intent.getPackage());
+  }
+
+  @Test
+  public void onMethodCall_setsComponentName() {
+    sender.setApplicationContext(context);
+    Map<String, Object> args = new HashMap<>();
+    ComponentName expectedComponent =
+        new ComponentName("io.flutter.plugins.androidintent", "MainActivity");
+    args.put("action", "foo");
+    args.put("package", expectedComponent.getPackageName());
+    args.put("componentName", expectedComponent.getClassName());
+    Result result = mock(Result.class);
+    ShadowPackageManager shadowPm =
+        shadowOf(ApplicationProvider.getApplicationContext().getPackageManager());
+    shadowPm.addActivityIfNotPresent(expectedComponent);
+
+    methodCallHandler.onMethodCall(new MethodCall("launch", args), result);
+
+    verify(result, times(1)).success(null);
+    Intent intent = shadowOf((Application) context).getNextStartedActivity();
+    assertNotNull(intent);
+    assertNotNull(intent.getComponent());
+    assertEquals(expectedComponent.getPackageName(), intent.getPackage());
+    assertEquals(expectedComponent.flattenToString(), intent.getComponent().flattenToString());
+  }
+
+  @Test
+  public void onMethodCall_setsType() {
+    sender.setApplicationContext(context);
+    Map<String, Object> args = new HashMap<>();
+    args.put("action", "foo");
+    String type = "video/*";
+    args.put("type", type);
+    Result result = mock(Result.class);
+
+    methodCallHandler.onMethodCall(new MethodCall("launch", args), result);
+
+    verify(result, times(1)).success(null);
+    Intent intent = shadowOf((Application) context).getNextStartedActivity();
+    assertNotNull(intent);
+    assertEquals(type, intent.getType());
+  }
+
+  @Test
+  public void onMethodCall_setsDataAndType() {
+    sender.setApplicationContext(context);
+    Map<String, Object> args = new HashMap<>();
+    args.put("action", "foo");
+    Uri data = Uri.parse("http://flutter.dev");
+    args.put("data", data.toString());
+    String type = "video/*";
+    args.put("type", type);
+    Result result = mock(Result.class);
+
+    methodCallHandler.onMethodCall(new MethodCall("launch", args), result);
+
+    verify(result, times(1)).success(null);
+    Intent intent = shadowOf((Application) context).getNextStartedActivity();
+    assertNotNull(intent);
+    assertEquals(type, intent.getType());
+    assertEquals(data, intent.getData());
   }
 }
