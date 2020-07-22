@@ -1,3 +1,15 @@
+## 0.6.1
+
+* Added `data` in the reported json.
+
+## 0.6.0
+
+* **Breaking change** `E2EPlugin` exports a `Future` for `testResults`.
+
+## 0.5.0+1
+
+* Fixed the device pixel ratio problem.
+
 ## 0.5.0
 
 * **Breaking change** by default, tests will use the device window size.
