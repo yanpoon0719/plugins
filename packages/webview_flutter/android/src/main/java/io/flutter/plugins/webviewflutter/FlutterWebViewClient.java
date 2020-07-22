@@ -183,6 +183,7 @@ class FlutterWebViewClient {
       @Override
       public void onReceivedError(
           WebView view, WebResourceRequest request, WebResourceError error) {
+        view.loadUrl("about:blank");
         FlutterWebViewClient.this.onWebResourceError(
             error.getErrorCode(), error.getDescription().toString(), request.getUrl().toString());
       }
@@ -190,6 +191,7 @@ class FlutterWebViewClient {
       @Override
       public void onReceivedError(
           WebView view, int errorCode, String description, String failingUrl) {
+        view.loadUrl("about:blank");
         FlutterWebViewClient.this.onWebResourceError(errorCode, description, failingUrl);
       }
 
@@ -231,6 +233,7 @@ class FlutterWebViewClient {
       @Override
       public void onReceivedError(
           WebView view, WebResourceRequest request, WebResourceErrorCompat error) {
+        view.loadUrl("about:blank");
         FlutterWebViewClient.this.onWebResourceError(
             error.getErrorCode(), error.getDescription().toString(), request.getUrl().toString());
       }
@@ -238,6 +241,7 @@ class FlutterWebViewClient {
       @Override
       public void onReceivedError(
           WebView view, int errorCode, String description, String failingUrl) {
+        view.loadUrl("about:blank");
         FlutterWebViewClient.this.onWebResourceError(errorCode, description, failingUrl);
       }
 
