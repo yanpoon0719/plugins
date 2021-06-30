@@ -1,16 +1,22 @@
+// Copyright 2013 The Flutter Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
 package io.flutter.plugins.localauthexample;
 
 import android.os.Bundle;
-import dev.flutter.plugins.e2e.E2EPlugin;
+import dev.flutter.plugins.integration_test.IntegrationTestPlugin;
 import io.flutter.app.FlutterFragmentActivity;
 import io.flutter.plugins.flutter_plugin_android_lifecycle.FlutterAndroidLifecyclePlugin;
 import io.flutter.plugins.localauth.LocalAuthPlugin;
 
+@SuppressWarnings("deprecation")
 public class EmbeddingV1Activity extends FlutterFragmentActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    E2EPlugin.registerWith(registrarFor("dev.flutter.plugins.e2e.E2EPlugin"));
+    IntegrationTestPlugin.registerWith(
+        registrarFor("dev.flutter.plugins.integration_test.IntegrationTestPlugin"));
     FlutterAndroidLifecyclePlugin.registerWith(
         registrarFor(
             "io.flutter.plugins.flutter_plugin_android_lifecycle.FlutterAndroidLifecyclePlugin"));
